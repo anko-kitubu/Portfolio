@@ -1,0 +1,184 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  line-height: 1.5;
+}
+
+.section {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: var(--hero-opacity, 1);
+  transition: opacity 0.2s linear;
+}
+
+.hero-content {
+  text-align: center;
+}
+
+#hero-title {
+  margin: 0 0 12px;
+  font-size: clamp(2rem, 8vw, 5rem);
+}
+
+#hero-name {
+  margin: 0;
+  font-size: clamp(1rem, 3vw, 1.8rem);
+}
+
+.works {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.works-inner {
+  width: min(900px, 100%);
+  margin-top: 40px;
+  opacity: var(--works-opacity, 0.1);
+  transform: translateY(var(--works-shift, 24px));
+  transition: opacity 0.2s linear, transform 0.2s linear;
+}
+
+.works-inner h2 {
+  margin: 0 0 16px;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.work-card {
+  width: 100%;
+  border: 1px solid #bdbdbd;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.thumb-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.work-title {
+  margin: 0;
+  padding: 12px;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1000;
+}
+
+.modal.is-open {
+  display: flex;
+}
+
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  position: relative;
+  width: min(640px, 100%);
+  border: 1px solid #bdbdbd;
+  background: #fff;
+  padding: 20px;
+  z-index: 1;
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: 1px solid #bdbdbd;
+  background: #fff;
+  cursor: pointer;
+}
+
+.modal-page {
+  min-height: 140px;
+}
+
+#modal-work-title {
+  margin: 0 32px 16px 0;
+}
+
+#modal-page-heading {
+  margin: 0 0 8px;
+}
+
+#modal-page-body {
+  margin: 0;
+}
+
+.modal-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-nav button {
+  min-width: 40px;
+}
+
+.modal-dots {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  gap: 8px;
+}
+
+.modal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #777;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.modal-dot.is-active {
+  background: #555;
+}
+
+.modal-nav button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .works-grid {
+    grid-template-columns: 1fr;
+  }
+}

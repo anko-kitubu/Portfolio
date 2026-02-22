@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <section id="hero" class="section hero">
+      <div class="hero-content">
+        <h1 id="hero-title"></h1>
+        <p id="hero-name"></p>
+      </div>
+    </section>
+
+    <section id="works" class="section works">
+      <div class="works-inner">
+        <h2>Works</h2>
+        <div id="works-grid" class="works-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <div
+    id="work-modal"
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-labelledby="modal-work-title"
+  >
+    <div class="modal-overlay" data-modal-close></div>
+    <div class="modal-content">
+      <button type="button" class="modal-close" data-modal-close aria-label="Close">x</button>
+      <h3 id="modal-work-title"></h3>
+      <div class="modal-page">
+        <h4 id="modal-page-heading"></h4>
+        <p id="modal-page-body"></p>
+      </div>
+      <div class="modal-nav">
+        <button id="modal-prev" type="button" aria-label="Previous page">Prev</button>
+        <div id="modal-dots" class="modal-dots"></div>
+        <button id="modal-next" type="button" aria-label="Next page">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
