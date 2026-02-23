@@ -52,13 +52,13 @@ const WORKS = [
       {
         heading: "主要機能",
         body: "　動画とカメラを同時に見ながら、練習区間の調整と表示切替をスムーズに行えるようにしました。\n\n主な機能\n・YouTube URL / 動画IDの読み込み\n・再生/停止、シーク、再生速度変更\n・レイアウト切替（Split / Reverse / Cam Float / Vid Float / Video / Camera）\n・カメラ・動画のミラー切替\n・履歴管理（再生動画・再生位置）\n・プレイリスト管理（追加・並び替え・削除）\n・設定の保存/復元（localStorage）\n・フォーカスモード（UIを隠して練習に集中）",
-        imageSrc: "assets/images/work-2-page-2.jpg",
+        imageSrc: "assets/images/work-2-thumb.jpg",
         imageAlt: "振りコピスタジオ page 2"
       },
       {
         heading: "工夫・実装",
         body: "　「お手本の全身」と「自分の全身」を大きく見たい一方で、端末ごとの画面サイズ差により比率の崩れ・切り取り・余白が発生する課題がありました。\n\n実装ポイント\n・16:9固定で最大表示（viewportから内接サイズを算出）\n・レイアウト切替直後のズレ対策（nextTick＋requestAnimationFrameで再計算）\n・小窓はドラッグ移動＋画面外に出ないよう位置/サイズをクランプ\n・履歴/プレイリスト/設定をlocalStorageに保存して復元\n・Canvasで疑似波形（pseudo）と簡易モーション量（フレーム差分）を試作",
-        imageSrc: "assets/images/work-2-page-3.jpg",
+        imageSrc: "assets/images/work-2-thumb.jpg",
         imageAlt: "振りコピスタジオ page 3"
       }
     ]
@@ -102,7 +102,7 @@ const WORKS = [
     pages: [
       {
         heading: "概要",
-        body: "　画面上の任意範囲を選択し、OCRで抽出した英語テキストを日本語に翻訳するWindowsアプリです（MVP開発中）。\n\n現在できていること\n・範囲選択キャプチャ\n・前処理（拡大/二値化）\n・OCR（Tesseract CLI）\n・翻訳（Microsoft Translator API / noop）\n・原文/訳文の表示とコピー\n\n技術スタック\n・C# / .NET 10 / WPF\n・Tesseract CLI\n・Microsoft Translator API",
+        body: "　画面上の任意範囲を選択し、OCRで抽出した英語テキストを日本語に翻訳するWindowsアプリです（MVP開発中）。海外のゲームをプレイする際の日本語訳を補助することを目的として開発しています。\n\n現在できていること\n・範囲選択キャプチャ\n・前処理（拡大/二値化）\n・OCR（Tesseract CLI）\n・翻訳（Microsoft Translator API / noop）\n・原文/訳文の表示とコピー\n\n技術スタック\n・C# / .NET 10 / WPF\n・Tesseract CLI\n・Microsoft Translator API",
         imageSrc: "assets/images/work-4-thumb.png",
         imageAlt: "ANtranslator page 1"
       }
@@ -126,9 +126,12 @@ const modalGithubPagesLinkEl = document.getElementById("modal-github-pages-link"
 const modalPrevEl = document.getElementById("modal-prev");
 const modalNextEl = document.getElementById("modal-next");
 const modalDotsEl = document.getElementById("modal-dots");
+const HERO_UNDERLINE_DRAW_MS = 900;
 
 let activeWorkIndex = -1;
 let activePageIndex = 0;
+let isHeroUnderlineDrawDone = false;
+let heroUnderlineTimerId = null;
 
 // 数値を指定した最小値と最大値の範囲に収める。
 function clamp(value, min, max) {
@@ -139,6 +142,36 @@ function clamp(value, min, max) {
 function setHeroContent() {
   heroTitleEl.textContent = HERO_TITLE;
   heroNameEl.textContent = HERO_NAME;
+}
+
+// ヒーロータイトル下線の初回描画を設定する。
+function setupHeroUnderline() {
+  if (!heroTitleEl) {
+    return;
+  }
+
+  heroTitleEl.classList.add("is-underline-ready");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (prefersReducedMotion) {
+    isHeroUnderlineDrawDone = true;
+    heroTitleEl.classList.add("is-underline-scroll");
+    document.documentElement.style.setProperty("--hero-underline-scroll-scale", "1");
+    return;
+  }
+
+  heroTitleEl.classList.add("is-underline-drawing");
+  if (heroUnderlineTimerId !== null) {
+    clearTimeout(heroUnderlineTimerId);
+  }
+
+  heroUnderlineTimerId = window.setTimeout(() => {
+    isHeroUnderlineDrawDone = true;
+    heroUnderlineTimerId = null;
+    heroTitleEl.classList.remove("is-underline-drawing");
+    heroTitleEl.classList.add("is-underline-scroll");
+    updateScrollAnimation();
+  }, HERO_UNDERLINE_DRAW_MS);
 }
 
 // src と読込結果に応じて画像表示と代替表示を切り替える。
@@ -277,6 +310,11 @@ function updateScrollAnimation() {
   document.documentElement.style.setProperty("--hero-opacity", String(1 - progress));
   document.documentElement.style.setProperty("--works-opacity", String(0.1 + progress * 0.9));
   document.documentElement.style.setProperty("--works-shift", `${(1 - progress) * 24}px`);
+
+  if (isHeroUnderlineDrawDone) {
+    const underlineScale = clamp(1 - progress, 0, 1);
+    document.documentElement.style.setProperty("--hero-underline-scroll-scale", String(underlineScale));
+  }
 }
 
 // モーダルが現在表示中かどうかを返す。
@@ -418,6 +456,7 @@ function setupScrollAnimation() {
 // ページ内容と各種インタラクションを初期化する。
 function init() {
   setHeroContent();
+  setupHeroUnderline();
   renderWorkCards();
   setupCardEvents();
   setupModalEvents();
