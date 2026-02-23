@@ -36,8 +36,28 @@
       <button type="button" class="modal-close" data-modal-close aria-label="Close">x</button>
       <h3 id="modal-work-title"></h3>
       <div class="modal-page">
-        <h4 id="modal-page-heading"></h4>
-        <p id="modal-page-body"></p>
+        <div class="modal-layout">
+          <div class="modal-left">
+            <div class="modal-media">
+              <img id="modal-page-image" class="modal-page-image is-hidden" src="" alt="">
+              <div id="modal-page-image-fallback" class="image-fallback">No Image</div>
+            </div>
+            <div class="modal-links">
+              <div class="modal-link-row">
+                <span class="modal-link-label">github:</span>
+                <a id="modal-github-link" class="modal-link-value is-disabled">-</a>
+              </div>
+              <div class="modal-link-row">
+                <span id="modal-secondary-link-label" class="modal-link-label">githubpages:</span>
+                <a id="modal-github-pages-link" class="modal-link-value is-disabled">-</a>
+              </div>
+            </div>
+          </div>
+          <div class="modal-right">
+            <h4 id="modal-page-heading"></h4>
+            <p id="modal-page-body"></p>
+          </div>
+        </div>
       </div>
       <div class="modal-nav">
         <button id="modal-prev" type="button" aria-label="Previous page">Prev</button>
