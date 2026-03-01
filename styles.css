@@ -504,12 +504,6 @@ body.modal-open {
   }
 }
 
-@media (max-width: 768px) {
-  .works-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
